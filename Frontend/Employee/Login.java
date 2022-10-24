@@ -99,7 +99,10 @@ public class Login implements ActionListener {
                 lerror.setVisible(true);
             }
         }
-        if (s.equals("Back")) {
+        if (s.equals("<--")) {
+            lerror.setVisible(false);
+            tusername.setText("");
+            tpassowrd.setText("");
             loginFrame.setVisible(false);
             new MainFrame();
         }

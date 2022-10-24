@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 
 import Backend.TripFare;
 import Backend.Record.RecordDetails;
+import Frontend.MainFrame;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -18,10 +19,10 @@ import java.awt.Image;
 
 public class TollForm implements ActionListener {
     JFrame formFrame;
-    JLabel heading, lvechileNumber, lname, lpayment;
+    JLabel heading, lvechileNumber, lname, lpayment, lpayinfo;
     JTextField tvechileNumber, tname;
     JRadioButton rgbus, rbus, rcar, rtruck, rroundTrip, rsingleTrip, rcard, rcash;
-    JButton bsubmit, bpaid;
+    JButton bsubmit, bpaid, brefresh, bback;
 
     String name = "", type = "", number = "", trip = "", payment = "";
     float fare;
@@ -106,6 +107,18 @@ public class TollForm implements ActionListener {
         bpaid.setVisible(false);
         bpaid.addActionListener(this);
 
+        bback = new JButton("<--");
+        bback.setVisible(true);
+        bback.setBounds(20, 10, 40, 30);
+        bback.addActionListener(this);
+
+        lpayinfo = new JLabel();
+        lpayinfo.setBounds(50, 350, 100, 30);
+
+        brefresh = new JButton("Refresh");
+        brefresh.setBounds(50, 400, 100, 50);
+        brefresh.addActionListener(this);
+
         formFrame.add(heading);
         formFrame.add(lname);
         formFrame.add(tname);
@@ -122,6 +135,9 @@ public class TollForm implements ActionListener {
         formFrame.add(rcard);
         formFrame.add(rcash);
         formFrame.add(bpaid);
+        formFrame.add(bback);
+        formFrame.add(brefresh);
+        formFrame.add(lpayinfo);
         formFrame.add(back);
 
         formFrame.setSize(600, 500);
@@ -167,7 +183,35 @@ public class TollForm implements ActionListener {
                 payment = "Cash";
             RecordDetails ob1 = new RecordDetails();
             System.out.println(trip);
-            ob1.insertRecord(name, type, number, trip, fare, payment);
+            if (ob1.insertRecord(name, type, number, trip, fare, payment) == 1) {
+                lpayinfo.setText("Saved successfully");
+                lpayinfo.setForeground(Color.GREEN);
+            } else {
+                lpayinfo.setText("Some error occured");
+                lpayinfo.setForeground(Color.RED);
+            }
+        }
+        if (s.equals("Refresh")) {
+            tname.setText("");
+            tvechileNumber.setText("");
+            lpayment.setText("");
+            lpayment.setVisible(false);
+            rcard.setVisible(false);
+            rcash.setVisible(false);
+            bpaid.setVisible(false);
+            lpayinfo.setText("");
+        }
+        if (s.equals("<--")) {
+            tname.setText("");
+            tvechileNumber.setText("");
+            lpayment.setText("");
+            lpayment.setVisible(false);
+            rcard.setVisible(false);
+            rcash.setVisible(false);
+            bpaid.setVisible(false);
+            lpayinfo.setText("");
+            formFrame.setVisible(false);
+            new MainFrame();
         }
     }
 }
