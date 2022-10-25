@@ -13,9 +13,11 @@
 package Backend.Record;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class RecordDetails {
     Connection connection = null;
+    ArrayList<String> list;
 
     int connection() {
         try {
@@ -47,6 +49,7 @@ public class RecordDetails {
                 stmt.execute();
                 connection.close();
                 statement.close();
+                return 1;
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -54,5 +57,31 @@ public class RecordDetails {
         } else {
             return 0;
         }
+    }
+
+    public ArrayList<String> allRecords() {
+        int a = connection();
+        if (a == 1) {
+            try {
+                Statement statement;
+                statement = connection.createStatement();
+                PreparedStatement stmt = connection.prepareStatement("select * from record");
+                ResultSet resultSet;
+                resultSet = stmt.executeQuery();
+                list = new ArrayList<String>();
+                while (resultSet.next()) {
+                    list.add(resultSet.getString("name"));
+                    list.add(resultSet.getString("type"));
+                    list.add(resultSet.getString("number"));
+                    list.add(resultSet.getString("time"));
+                }
+                statement.close();
+                connection.close();
+                return list;
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+        return list;
     }
 }

@@ -113,7 +113,7 @@ public class TollForm implements ActionListener {
         bback.addActionListener(this);
 
         lpayinfo = new JLabel();
-        lpayinfo.setBounds(50, 350, 100, 30);
+        lpayinfo.setBounds(50, 350, 200, 30);
 
         brefresh = new JButton("Refresh");
         brefresh.setBounds(50, 400, 100, 50);
